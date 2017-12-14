@@ -1,5 +1,4 @@
 const { exec } = require('child_process')
-const argv = require('yargs').argv
 
 const toArray = str => str.split('\n')
 
@@ -27,7 +26,7 @@ const lernaChangelog = (from, to) =>
     )
   )
 
-export const fullChangelog = () => {
+const fullChangelog = () => {
   getTags()
     .then(tags => lernaChangelog(tags.pop()))
     .then(changelog => {
@@ -48,7 +47,11 @@ const recentTagChangelog = () => {
 }
 
 // fullChangelog()
-recentTagChangelog()
+// recentTagChangelog()
+//
+// if (argv['to']) {
+// }
 
-if (argv['to']) {
+module.exports = {
+  fullChangelog,
 }

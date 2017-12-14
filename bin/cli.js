@@ -3,10 +3,13 @@
 const { fullChangelog } = require('../index.js')
 
 require('yargs')
-  .version(function() {
-    return require('../package').version
+  .version(require('../package').version)
+  .usage('\nUsage: $0 [options]')
+  .option('from', {
+    description: 'start tag',
+  })
+  .option('to', {
+    description: 'end tag',
   })
   .help('help')
-  .option('from')
-  .option('to')
-  .showHelpOnFail(true, 'use --help for available options')
+  .showHelpOnFail(true, 'use --help for available options').argv
