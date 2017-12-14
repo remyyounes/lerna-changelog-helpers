@@ -1,7 +1,10 @@
 const { exec } = require('child_process')
 
 const toArray = str => str.split('\n')
-
+const debug = x => {
+  console.log(x)
+  return x;
+}
 const removeBlanks = arr => arr.filter(str => str)
 
 const tagFrom = from => (from ? `--tag-from ${from}` : '')
@@ -21,37 +24,24 @@ const getTags = () =>
 const lernaChangelog = (from, to) =>
   new Promise((resolve, reject) =>
     exec(
-      `npx lerna-changelog ${tagFrom(from)} ${tagTo(to)}`,
+      debug(`npx lerna-changelog ${tagFrom(from)} ${tagTo(to)}`),
       (err, stdout, stderr) => (err ? reject(err) : resolve(stdout))
     )
   )
 
-const fullChangelog = () => {
-  getTags()
+const rangeChangelog = lernaChangelog
+
+const fullChangelog = () => getTags()
     .then(tags => lernaChangelog(tags.pop()))
-    .then(changelog => {
-      console.log(changelog)
-    })
-}
 
-const recentTagChangelog = () => {
-  getTags()
-    .then(tags => lernaChangelog(tags[0], tags[0]))
-    .then(changelog => {
-      console.log(changelog)
-    })
 
-  // getTags.then(tags => lernaChangelog(tags[1], tags[0])).then(changelog => {
-  //   console.log(changelog)
-  // })
-}
+const recentChangelog = () => getTags()
+    .then(tags => lernaChangelog(tags[1], tags[0]))
 
-// fullChangelog()
-// recentTagChangelog()
-//
-// if (argv['to']) {
-// }
 
 module.exports = {
+  debug,
   fullChangelog,
+  lernaChangelog
+  recentChangelog,
 }
