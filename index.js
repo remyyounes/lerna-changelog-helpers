@@ -27,7 +27,7 @@ const lernaChangelog = (from, to) =>
     )
   )
 
-const fullChangelog = () => {
+export const fullChangelog = () => {
   getTags()
     .then(tags => lernaChangelog(tags.pop()))
     .then(changelog => {

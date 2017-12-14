@@ -1,0 +1,29 @@
+{
+  "name": "lerna-changelog-range",
+  "version": "1.0.0",
+  "description": "Changelog generator within range",
+  "main": "index.js",
+  "bin": {
+    "lerna-changelog-range": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remyyounes/lerna-changelog-range.git"
+  },
+  "keywords": [
+    "changelog"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remyyounes/lerna-changelog-range/issues"
+  },
+  "homepage": "https://github.com/remyyounes/lerna-changelog-range#readme",
+  "devDependencies": {
+    "lerna-changelog": "^0.7.0",
+    "yargs": "^10.0.3"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "lerna": "2.5.0",
+  "version": "0.1.0",
+  "npmClient": "yarn",
+  "parallel": true,
+  "message": "chore(release): publish %s",
+  "useWorkspaces": true,
+  "changelog": {
+    "repo": "remyyounes/lerna-changelog-range",
+    "labels": {
+      "Tag: New Feature": ":rocket: New Feature",
+      "Tag: Breaking Change": ":boom: Breaking Change",
+      "Tag: Bug Fix": ":bug: Bug Fix",
+      "Tag: Enhancement": ":nail_care: Enhancement",
+      "Tag: Internal": ":house: Internal"
+    },
+    "cacheDir": ".changelog"
+  }
+}
