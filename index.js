@@ -98,5 +98,6 @@ module.exports = {
   debug,
   fullChangelog,
   lernaChangelog,
-  recentChangelog
+  recentChangelog,
+  sortTags
 };

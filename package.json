@@ -7,15 +7,13 @@
     "lerna-changelog-range": "./bin/cli.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/remyyounes/lerna-changelog-range.git"
   },
-  "keywords": [
-    "changelog"
-  ],
+  "keywords": ["changelog"],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -23,6 +21,7 @@
   },
   "homepage": "https://github.com/remyyounes/lerna-changelog-range#readme",
   "devDependencies": {
+    "jest": "^21.2.1",
     "lerna-changelog": "^0.7.0",
     "ramda": "^0.25.0",
     "yargs": "^10.0.3"
