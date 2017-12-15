@@ -24,6 +24,8 @@
   "homepage": "https://github.com/remyyounes/lerna-changelog-range#readme",
   "devDependencies": {
     "lerna-changelog": "^0.7.0",
+    "ramda": "^0.25.0",
     "yargs": "^10.0.3"
-  }
+  },
+  "dependencies": {}
 }
