@@ -27,7 +27,8 @@ const parseTagVersion = tag =>
     .trim();
 
 const getPrevStableTag = tags => {
-  return tags.filter(tag => !tag.includes(tags[0]))[0];
+  const latest = head(tags).version;
+  return head(tags.filter(tag => !tag.version.includes(latest)));
 };
 
 const filterTags = tags => {
