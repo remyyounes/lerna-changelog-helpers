@@ -1,69 +1,68 @@
-const { exec } = require("child_process");
-const { split, head, last, join, compose, map, filter } = require("ramda");
+const { exec } = require('child_process')
+const R = require('ramda')
 
-const TAG_SPLIT = "\n## ";
-
-const toArray = str => str.split("\n");
-const prepend = pre => str => pre.concat(str);
+const TAG_SPLIT = '\n## '
 
 const debug = x => {
-  console.log(x);
-  debugger;
-  return x;
-};
+  console.log(x)
+  debugger
+  return x
+}
 
-const removeBlanks = arr => arr.filter(str => str);
+const toArray = str => str.split('\n')
 
-const isUnreleased = tag => tag.indexOf("Unreleased") === 0;
+const prepend = pre => str => pre.concat(str)
 
-const tagFrom = from => (from ? `--tag-from ${from}` : "");
+const removeBlanks = arr => R.filter(R.identity)(arr)
 
-const tagTo = to => (to ? `--tag-to ${to}` : "");
+const isUnreleased = tag => R.startsWith('Unreleased')
+
+const tagFrom = tag => (tag ? `--tag-from ${tag.version}` : '')
+
+const tagTo = tag => (tag ? `--tag-to ${tag.version}` : '')
 
 const parseTagVersion = tag =>
-  tag
-    .split(" ")[0]
-    .split("-")[0]
-    .trim();
+  R.pipe(R.split(' '), R.head, R.split('-'), R.head, R.trim)(tag)
 
 const getPrevStableTag = tags => {
-  const latest = head(tags).version;
-  return head(tags.filter(tag => !tag.version.includes(latest)));
-};
+  const latest = R.head(tags).version
+  return R.head(tags.filter(tag => !tag.version.includes(latest)))
+}
 
 const filterTags = tags => {
-  let version = null;
+  let version = null
   return tags.filter(body => {
-    const curVersion = parseTagVersion(body);
+    const curVersion = parseTagVersion(body)
     if (isUnreleased(body) || curVersion.includes(version)) {
-      return false;
+      return false
     }
-    version = curVersion;
-    return true;
-  });
-};
+    version = curVersion
+    return true
+  })
+}
 
-const sortTags = versions => tags =>
-  tags.sort((a, b) => {
-    const dateA = versions[a] && versions[a].date;
-    const dateB = versions[b] && versions[b].date;
-    return dateA - dateB;
-  });
+const sortTags = tags => mdTags =>
+  mdTags.sort((a, b) => {
+    const dateA = tags[a] && tags[a].date
+    const dateB = tags[b] && tags[b].date
+
+    return dateA - dateB
+  })
 
 const squashVersions = versions =>
-  compose(
-    prepend(TAG_SPLIT),
-    join(TAG_SPLIT),
-    sortTags(versions),
-    filterTags,
+  R.pipe(
+    R.split(TAG_SPLIT),
     removeBlanks,
-    split(TAG_SPLIT)
-  );
+    filterTags,
+    sortTags(versions),
+    R.join(TAG_SPLIT),
+    prepend(TAG_SPLIT)
+  )
 
 const toTag = meta => {
-  const [version, date] = meta.split("|");
-  return { version, date: parseInt(date, 10) };
-};
+  const [version, date] = meta.split('|')
+  return { version, date: parseInt(date, 10) }
+}
 
 const getTags = () =>
   new Promise((resolve, reject) =>
@@ -74,29 +73,31 @@ const getTags = () =>
   )
     .then(toArray)
     .then(removeBlanks)
-    .then(map(toTag));
+    .then(R.map(toTag))
 
-const lernaChangelog = (from = {}, to = {}) =>
+const lernaChangelog = (from, to) =>
   new Promise((resolve, reject) =>
     exec(
-      `npx lerna-changelog ${tagFrom(from.version)} ${tagTo(to.version)}`,
+      `npx lerna-changelog ${tagFrom(from)} ${tagTo(to)}`,
       (err, stdout, stderr) => (err ? reject(err) : resolve(stdout))
     )
-  );
+  )
 
 const fullChangelog = () =>
-  getTags().then(tags => lernaChangelog(last(tags)).then(squashVersions(tags)));
+  getTags().then(tags =>
+    lernaChangelog(R.last(tags)).then(squashVersions(tags))
+  )
 
 const recentChangelog = () =>
   getTags().then(tags =>
-    lernaChangelog(getPrevStableTag(tags), head(tags)).then(
+    lernaChangelog(getPrevStableTag(tags), R.head(tags)).then(
       squashVersions(tags)
     )
-  );
+  )
 
 module.exports = {
   debug,
   fullChangelog,
   lernaChangelog,
-  recentChangelog
-};
+  recentChangelog,
+}
