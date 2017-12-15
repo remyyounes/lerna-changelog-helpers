@@ -11,7 +11,7 @@ const debug = x => {
 
 const toArray = str => str.split('\n')
 
-const prepend = pre => str => pre.concat(str)
+const prepend = pre => str => `${pre}${str}`
 
 const removeBlanks = arr => R.filter(R.identity)(arr)
 
@@ -29,16 +29,17 @@ const getPrevStableTag = tags => {
   return R.head(tags.filter(tag => !tag.version.includes(latest)))
 }
 
-const filterTags = tags => {
-  let version = null
-  return tags.filter(body => {
-    const curVersion = parseTagVersion(body)
-    if (isUnreleased(body) || curVersion.includes(version)) {
-      return false
+const removePrereleases = tags => {
+  const versions = {}
+
+  return tags.reduce((acc, body) => {
+    const version = parseTagVersion(body)
+
+    if (!versions[version]) {
+      versions[version] = true
+      acc.push(body)
     }
-    version = curVersion
-    return true
-  })
+  }, [])
 }
 
 const sortTags = tags => mdTags =>
@@ -53,7 +54,7 @@ const squashVersions = versions =>
   R.pipe(
     R.split(TAG_SPLIT),
     removeBlanks,
-    filterTags,
+    removePrereleases,
     sortTags(versions),
     R.join(TAG_SPLIT),
     prepend(TAG_SPLIT)
