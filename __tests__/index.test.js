@@ -115,6 +115,7 @@ test('parseTags git-cli output in to a tag array', () => {
 test('squashVersions', () => {
   const changelog = `
 ## Unreleased
+## v4.0.0-rc.1 (2017-12-12)
 ## v4.0.0-rc.0 (2017-12-12)
 ## v3.0.0 (2017-12-12)
 ## v3.0.0-rc.0 (2017-12-12)
@@ -124,7 +125,7 @@ test('squashVersions', () => {
   `
 
   const expected = `
-## v4.0.0-rc.0 (2017-12-12)
+## v4.0.0-rc.1 (2017-12-12)
 ## v3.0.0 (2017-12-12)
 ## v2.0.0 (2017-01-12)
 ## v1.0.0 (2017-12-12)
@@ -139,16 +140,4 @@ test('squashVersions', () => {
   ]
 
   expect(squashVersions(tags)(changelog)).toEqual(expected)
-})
-
-test('getLatestTag', () => {
-  const changelog = `
-## v2.0.0 (2017-01-12)
-## v1.0.0 (2017-12-12)
-  `
-
-  const expected = `
-## v2.0.0 (2017-01-12)`
-
-  expect(getLatestTag(changelog)).toEqual(expected)
 })

@@ -36,13 +36,6 @@ const buildTimestampHash = tags =>
 const getPrevStableTag = (latest, tags) =>
   R.head(tags.filter(tag => !tag.version.includes(latest)))
 
-const getLatestTag = R.pipe(
-  R.split(TAG_SPLIT),
-  removeBlanks,
-  R.head,
-  prepend(TAG_SPLIT)
-)
-
 const removePrereleases = tags => {
   const versions = {}
 
@@ -105,9 +98,9 @@ const lernaChangelog = (from, to) =>
     )
   )
 
-const fullChangelog = () =>
+const fullChangelog = squash =>
   getTags().then(tags =>
-    lernaChangelog(R.last(tags)).then(squashVersions(tags))
+    lernaChangelog(R.last(tags)).then(squash ? squashVersions(tags) : tags)
   )
 
 const recentChangelog = () =>
@@ -116,7 +109,7 @@ const recentChangelog = () =>
       lernaChangelog(
         getPrevStableTag(R.head(tags).version, tags),
         R.head(tags)
-      ).then(getLatestTag)
+      ).then(squashVersions(tags))
     )
     .catch(console.error)
 
@@ -124,7 +117,6 @@ module.exports = {
   buildTimestampHash,
   debug,
   fullChangelog,
-  getLatestTag,
   getPrevStableTag,
   getTags,
   isReleased,
