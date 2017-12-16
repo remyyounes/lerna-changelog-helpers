@@ -106,7 +106,7 @@ const recentChangelog = () =>
   getTags()
     .then(tags =>
       lernaChangelog(
-        getPrevStableTag(R.head(tags).version, tags),
+        getPrevStableTag(R.head(tags).version)(tags),
         R.head(tags)
       ).then(squashVersions(tags))
     )
