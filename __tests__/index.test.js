@@ -111,16 +111,16 @@ test("parseTags git-cli output in to a tag array", () => {
   expect(parseTags(gitOutput)).toEqual(tags);
 });
 
-test("parseTags git-cli output in to a tag array", () => {
-  const tags = [
-    { date: 3, version: "v2.0.0" },
-    { date: 2, version: "v2.0.0-rc.0" },
-    { date: 1, version: "v1.0.0" }
-  ];
+test("squashVersions", () => {
+  const changelog = `
+  ## v3.0.0 (2017-12-12)
+  ## v2.0.0 (2017-01-12)
+  `;
+
   const expected = `
 
   `;
-  expect(squashVersions(tags)()).toEqual(expected);
+  expect(squashVersions(changelog)).toEqual(expected);
 });
 
 // squashVersions,
