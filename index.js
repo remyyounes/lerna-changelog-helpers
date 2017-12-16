@@ -105,34 +105,31 @@ const fullChangelog = () =>
 
 const recentChangelog = () =>
   getTags()
-    .then(
-      tags =>
-        lernaChangelog(
-          getPrevStableTag(R.head(tags).version, tags),
-          R.head(tags)
-        )
-      // .then(
-      //   squashVersions(tags)
-      // )
+    .then(tags =>
+      lernaChangelog(
+        getPrevStableTag(R.head(tags).version, tags),
+        R.head(tags)
+      ).then(squashVersions(tags))
     )
     .catch(console.error);
 
 module.exports = {
-  prepend,
-  removeBlanks,
-  isReleased,
-  tagFrom,
-  tagTo,
-  parseTagVersion,
   buildTimestampHash,
+  debug,
+  fullChangelog,
   getPrevStableTag,
+  getTags,
+  isReleased,
+  lernaChangelog,
+  parseTags,
+  parseTagVersion,
+  prepend,
+  recentChangelog,
+  removeBlanks,
   removePrereleases,
   sortTags,
   squashVersions,
-  toTag,
-  getTags,
-  lernaChangelog,
-  parseTags,
-  fullChangelog,
-  recentChangelog
+  tagFrom,
+  tagTo,
+  toTag
 };
