@@ -3,7 +3,7 @@ const R = require("ramda");
 const {
   prepend,
   removeBlanks,
-  isUnreleased,
+  isReleased,
   tagFrom,
   tagTo,
   parseTagVersion,
@@ -36,9 +36,9 @@ test("remove blanks filters out falsey values", () => {
   expect(removeBlanks(arr)).toEqual(["foo", "bar"]);
 });
 
-test('isUnreleased returns true if string begins with "Unreleased"', () => {
-  expect(isUnreleased("Unreleased string here")).toEqual(true);
-  expect(isUnreleased("String here")).toEqual(false);
+test('isReleased returns true unless string begins with "Unreleased"', () => {
+  expect(isReleased("Unreleased string here")).toEqual(false);
+  expect(isReleased("String here")).toEqual(true);
 });
 
 test("tagFrom returns the lerna-changelog --tag-from option", () => {
@@ -111,8 +111,16 @@ test("parseTags git-cli output in to a tag array", () => {
   expect(parseTags(gitOutput)).toEqual(tags);
 });
 
+test("parseTags git-cli output in to a tag array", () => {
+  const tags = [
+    { date: 3, version: "v2.0.0" },
+    { date: 2, version: "v2.0.0-rc.0" },
+    { date: 1, version: "v1.0.0" }
+  ];
+  const expected = `
+
+  `;
+  expect(squashVersions(tags)()).toEqual(expected);
+});
+
 // squashVersions,
-// getTags,
-// lernaChangelog,
-// fullChangelog,
-// recentChangelog

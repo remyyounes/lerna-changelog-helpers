@@ -13,7 +13,7 @@ const prepend = pre => str => `${pre}${str}`;
 
 const removeBlanks = R.filter(R.identity);
 
-const isUnreleased = R.startsWith("Unreleased");
+const isReleased = R.pipe(R.startsWith("Unreleased"), R.not);
 
 const tagFrom = tag => (tag ? `--tag-from ${tag.version}` : "");
 
@@ -63,7 +63,7 @@ const squashVersions = tags =>
   R.pipe(
     R.split(TAG_SPLIT),
     removeBlanks,
-    R.filter(not(isUnreleased)),
+    R.filter(isReleased),
     removePrereleases,
     sortTags(buildTimestampHash(tags)),
     R.join(TAG_SPLIT),
@@ -99,21 +99,28 @@ const lernaChangelog = (from, to) =>
   );
 
 const fullChangelog = () =>
-  getTags().then(tags =>
-    lernaChangelog(R.last(tags)).then(squashVersions(tags))
+  getTags().then(
+    tags => lernaChangelog(R.last(tags)) //.then(squashVersions(tags))
   );
 
 const recentChangelog = () =>
-  getTags().then(tags =>
-    lernaChangelog(getPrevStableTag(R.head(tags).version), R.head(tags)).then(
-      squashVersions(tags)
+  getTags()
+    .then(
+      tags =>
+        lernaChangelog(
+          getPrevStableTag(R.head(tags).version, tags),
+          R.head(tags)
+        )
+      // .then(
+      //   squashVersions(tags)
+      // )
     )
-  );
+    .catch(console.error);
 
 module.exports = {
   prepend,
   removeBlanks,
-  isUnreleased,
+  isReleased,
   tagFrom,
   tagTo,
   parseTagVersion,
