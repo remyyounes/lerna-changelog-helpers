@@ -9,20 +9,23 @@ const debug = x => {
   return x
 }
 
-const toArray = str => str.split('\n')
-
 const prepend = pre => str => `${pre}${str}`
 
-const removeBlanks = arr => R.filter(R.identity)(arr)
+const removeBlanks = R.filter(R.identity)
 
-const isUnreleased = tag => R.startsWith('Unreleased')
+const isUnreleased = R.startsWith('Unreleased')
 
 const tagFrom = tag => (tag ? `--tag-from ${tag.version}` : '')
 
 const tagTo = tag => (tag ? `--tag-to ${tag.version}` : '')
 
-const parseTagVersion = tag =>
-  R.pipe(R.split(' '), R.head, R.split('-'), R.head, R.trim)(tag)
+const parseTagVersion = R.pipe(
+  R.split(' '),
+  R.head,
+  R.split('-'),
+  R.head,
+  R.trim
+)
 
 const buildTimestampHash = tags =>
   tags.reduce((acc, tag) => {
@@ -30,10 +33,8 @@ const buildTimestampHash = tags =>
     return acc
   }, {})
 
-const getPrevStableTag = tags => {
-  const latest = R.head(tags).version
-  return R.head(tags.filter(tag => !tag.version.includes(latest)))
-}
+const getPrevStableTag = (latest, tags) =>
+  R.head(tags.filter(tag => !tag.version.includes(latest)))
 
 const removePrereleases = tags => {
   const versions = {}
@@ -80,7 +81,7 @@ const getTags = () =>
       (err, stdout, stderr) => (err ? reject(err) : resolve(stdout))
     )
   )
-    .then(toArray)
+    .then(R.split('\n'))
     .then(removeBlanks)
     .then(R.map(toTag))
 
@@ -99,13 +100,12 @@ const fullChangelog = () =>
 
 const recentChangelog = () =>
   getTags().then(tags =>
-    lernaChangelog(getPrevStableTag(tags), R.head(tags)).then(
+    lernaChangelog(getPrevStableTag(R.head(tags).version), R.head(tags)).then(
       squashVersions(tags)
     )
   )
 
 module.exports = {
-  toArray,
   prepend,
   removeBlanks,
   isUnreleased,
