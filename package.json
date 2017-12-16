@@ -11,20 +11,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/remyyounes/lerna-changelog-range.git"
+    "url": "git+https://github.com/remyyounes/lerna-changelog-helpers.git"
   },
   "keywords": ["changelog"],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/remyyounes/lerna-changelog-range/issues"
+    "url": "https://github.com/remyyounes/lerna-changelog-helpers/issues"
   },
-  "homepage": "https://github.com/remyyounes/lerna-changelog-range#readme",
+  "homepage": "https://github.com/remyyounes/lerna-changelog-helpers#readme",
+  "peerDependencies": {
+    "lerna-changelog": "^0.7.0"
+  },
   "devDependencies": {
-    "jest": "^21.2.1",
-    "lerna-changelog": "^0.7.0",
+    "jest": "^21.2.1"
+  },
+  "dependencies": {
     "ramda": "^0.25.0",
     "yargs": "^10.0.3"
-  },
-  "dependencies": {}
+  }
 }

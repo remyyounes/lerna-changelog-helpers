@@ -6,7 +6,7 @@
   "message": "chore(release): publish %s",
   "useWorkspaces": true,
   "changelog": {
-    "repo": "remyyounes/lerna-changelog-range",
+    "repo": "remyyounes/lerna-changelog-helpers",
     "labels": {
       "Tag: New Feature": ":rocket: New Feature",
       "Tag: Breaking Change": ":boom: Breaking Change",
