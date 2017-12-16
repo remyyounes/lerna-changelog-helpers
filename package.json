@@ -1,10 +1,10 @@
 {
-  "name": "lerna-changelog-range",
+  "name": "lerna-changelog-helpers",
   "version": "0.1.0",
-  "description": "Changelog generator within range",
+  "description": "Changelog generator helpers",
   "main": "index.js",
   "bin": {
-    "lerna-changelog-range": "./bin/cli.js"
+    "lerna-changelog-helpers": "./bin/cli.js"
   },
   "scripts": {
     "test": "jest"
