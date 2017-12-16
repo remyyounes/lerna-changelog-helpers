@@ -1,6 +1,6 @@
 {
   "name": "lerna-changelog-helpers",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Changelog generator helpers",
   "main": "index.js",
   "bin": {
@@ -29,5 +29,8 @@
   "dependencies": {
     "ramda": "^0.25.0",
     "yargs": "^10.0.3"
+  },
+  "engines": {
+    "node": ">=8.0.0"
   }
 }
