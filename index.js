@@ -24,6 +24,12 @@ const tagTo = tag => (tag ? `--tag-to ${tag.version}` : '')
 const parseTagVersion = tag =>
   R.pipe(R.split(' '), R.head, R.split('-'), R.head, R.trim)(tag)
 
+const buildTimestampHash = tags =>
+  tags.reduce((acc, tag) => {
+    acc[tag.version] = tag.date
+    return acc
+  }, {})
+
 const getPrevStableTag = tags => {
   const latest = R.head(tags).version
   return R.head(tags.filter(tag => !tag.version.includes(latest)))
@@ -32,30 +38,32 @@ const getPrevStableTag = tags => {
 const removePrereleases = tags => {
   const versions = {}
 
-  return tags.reduce((acc, body) => {
-    const version = parseTagVersion(body)
+  return tags.reduce((acc, tag) => {
+    const version = parseTagVersion(tag)
 
-    if (!versions[version]) {
+    if (!isUnreleased(tag) || !versions[version]) {
       versions[version] = true
-      acc.push(body)
+      acc.push(tag)
     }
+
+    return acc
   }, [])
 }
 
-const sortTags = tags => mdTags =>
+const sortTags = timestampHash => mdTags =>
   mdTags.sort((a, b) => {
-    const dateA = tags[a] && tags[a].date
-    const dateB = tags[b] && tags[b].date
+    const versionA = parseTagVersion(a)
+    const versionB = parseTagVersion(b)
 
-    return dateA - dateB
+    return timestampHash[versionB] - timestampHash[versionA]
   })
 
-const squashVersions = versions =>
+const squashVersions = tags =>
   R.pipe(
     R.split(TAG_SPLIT),
     removeBlanks,
     removePrereleases,
-    sortTags(versions),
+    sortTags(buildTimestampHash(tags)),
     R.join(TAG_SPLIT),
     prepend(TAG_SPLIT)
   )
@@ -97,8 +105,21 @@ const recentChangelog = () =>
   )
 
 module.exports = {
-  debug,
-  fullChangelog,
+  toArray,
+  prepend,
+  removeBlanks,
+  isUnreleased,
+  tagFrom,
+  tagTo,
+  parseTagVersion,
+  buildTimestampHash,
+  getPrevStableTag,
+  removePrereleases,
+  sortTags,
+  squashVersions,
+  toTag,
+  getTags,
   lernaChangelog,
+  fullChangelog,
   recentChangelog,
 }
