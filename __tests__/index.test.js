@@ -14,6 +14,7 @@ const {
   squashVersions,
   toTag,
   getTags,
+  parseTags,
   lernaChangelog,
   fullChangelog,
   recentChangelog
@@ -89,3 +90,29 @@ test("sortTags sorts the tag in descending order", () => {
 
   expect(sortTags(versions)(tagsArr)).toEqual(sorted);
 });
+
+test("toTag parses a string into a [name: date ] hash", () => {
+  const str = "v3.0.0|1";
+  const tag = { date: 1, version: "v3.0.0" };
+  expect(toTag(str)).toEqual(tag);
+});
+
+test("parseTags git-cli output in to a tag array", () => {
+  const gitOutput = `
+    v2.0.0|3
+    v2.0.0-rc.0|2
+    v1.0.0|1
+  `;
+  const tags = [
+    { date: 3, version: "v2.0.0" },
+    { date: 2, version: "v2.0.0-rc.0" },
+    { date: 1, version: "v1.0.0" }
+  ];
+  expect(parseTags(gitOutput)).toEqual(tags);
+});
+
+// squashVersions,
+// getTags,
+// lernaChangelog,
+// fullChangelog,
+// recentChangelog

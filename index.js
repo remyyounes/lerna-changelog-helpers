@@ -81,10 +81,14 @@ const getTags = () =>
       "git for-each-ref --sort=-taggerdate --format '%(tag)|%(taggerdate:raw)' refs/tags",
       (err, stdout, stderr) => (err ? reject(err) : resolve(stdout))
     )
-  )
-    .then(R.split("\n"))
-    .then(removeBlanks)
-    .then(R.map(toTag));
+  ).then(parseTags);
+
+const parseTags = R.pipe(
+  R.split("\n"),
+  R.map(R.trim),
+  removeBlanks,
+  R.map(toTag)
+);
 
 const lernaChangelog = (from, to) =>
   new Promise((resolve, reject) =>
@@ -121,6 +125,7 @@ module.exports = {
   toTag,
   getTags,
   lernaChangelog,
+  parseTags,
   fullChangelog,
   recentChangelog
 };
