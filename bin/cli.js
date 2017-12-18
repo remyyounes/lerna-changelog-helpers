@@ -39,5 +39,5 @@ if (flags.all) {
 } else if ((flags.from && flags.to) || flags.from) {
   lernaChangelog({ version: flags.from }, { version: flags.to }).then(debug)
 } else {
-  recentChangelog(flags.includeUnreleased).then(debug)
+  recentChangelog().then(debug)
 }

@@ -15,7 +15,7 @@ const removeBlanks = R.filter(R.identity)
 
 const isUnreleased = R.startsWith('Unreleased')
 
-const isReleased = R.pipe(isUnreleased, R.not)
+const isReleased = R.compose(R.not, isUnreleased)
 
 const isPrerelease = tag => isUnreleased(tag) || tag.match(/v\d*\.\d*\.\d*-/)
 
