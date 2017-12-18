@@ -7,12 +7,14 @@
   "useWorkspaces": true,
   "changelog": {
     "repo": "remyyounes/lerna-changelog-helpers",
+    "ignoreCommitters": ["renovate"],
     "labels": {
-      "Tag: New Feature": ":rocket: New Feature",
       "Tag: Breaking Change": ":boom: Breaking Change",
       "Tag: Bug Fix": ":bug: Bug Fix",
+      "Tag: Dependencies": ":books: Dependencies",
       "Tag: Enhancement": ":nail_care: Enhancement",
-      "Tag: Internal": ":house: Internal"
+      "Tag: Internal": ":house: Internal",
+      "Tag: New Feature": ":gift: New Feature"
     },
     "cacheDir": ".changelog"
   }
