@@ -23,9 +23,10 @@ const tagFrom = tag => (tag ? `--tag-from ${tag.version}` : '')
 
 const tagTo = tag => (tag ? `--tag-to ${tag.version}` : '')
 
-const parseTagVersion = R.pipe(
-  R.split(' '),
-  R.head,
+const parseTagVersion = R.pipe(R.split(' '), R.head, R.trim)
+
+const parseStableTagVersion = R.pipe(
+  parseTagVersion,
   R.split('-'),
   R.head,
   R.trim
@@ -43,7 +44,7 @@ const removePrereleases = tags => {
   const versions = {}
 
   return tags.reduce((acc, tag) => {
-    const version = parseTagVersion(tag)
+    const version = parseStableTagVersion(tag)
 
     if (!versions[version]) {
       versions[version] = true
@@ -142,6 +143,7 @@ module.exports = {
   lernaChangelog,
   parseTags,
   parseTagVersion,
+  parseStableTagVersion,
   prepend,
   recentChangelog,
   removeBlanks,

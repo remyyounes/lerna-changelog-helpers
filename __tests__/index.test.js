@@ -12,6 +12,7 @@ const {
   lernaChangelog,
   parseTags,
   parseTagVersion,
+  parseStableTagVersion,
   prepend,
   recentChangelog,
   removeBlanks,
@@ -68,7 +69,12 @@ test('tagTo returns the lerna-changelog --tag-to option', () => {
 
 test('parseTagVersion extracts the version from a string', () => {
   expect(parseTagVersion('v1.0.0 (12-12-2017)')).toEqual('v1.0.0')
-  expect(parseTagVersion('v1.0.0-rc.0 (12-12-2017)')).toEqual('v1.0.0')
+  expect(parseTagVersion('v1.0.0-rc.0 (12-12-2017)')).toEqual('v1.0.0-rc.0')
+})
+
+test('parseStableTagVersion extracts the version from a string', () => {
+  expect(parseStableTagVersion('v1.0.0 (12-12-2017)')).toEqual('v1.0.0')
+  expect(parseStableTagVersion('v1.0.0-rc.0 (12-12-2017)')).toEqual('v1.0.0')
 })
 
 test('buildTimestampHash converts tags to a hash of version:timestamp', () => {
