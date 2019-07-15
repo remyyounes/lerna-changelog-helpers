@@ -13,7 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/remyyounes/lerna-changelog-helpers.git"
   },
-  "keywords": ["changelog"],
+  "keywords": [
+    "changelog"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -24,7 +26,7 @@
     "lerna-changelog": "^0.7.0"
   },
   "devDependencies": {
-    "jest": "^21.2.1"
+    "jest": "24.8.0"
   },
   "dependencies": {
     "ramda": "^0.25.0",
